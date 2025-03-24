@@ -1,9 +1,8 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/gbHItYk9)
 ## Project 00
 ### NeXTCS
-### Period: 
-## Name0: YOUR NAME HERE
-## Name1: OTHER NAME HERE (delete this line if you are working solo)
+### Period: 10
+## Name0: Vincent Zheng
 ---
 
 This project will be completed in phases. The first phase will be to work on this document. Use github-flavoured markdown. (For more markdown help [click here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) or [here](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) )
@@ -26,19 +25,19 @@ All projects will require the following:
 ## Phase 0: Force Selection, Analysis & Plan
 ---------- 
 
-#### Custom Force: NAME OF YOUR FORCE
+#### Custom Force: Electrostatic Force
 
 ### Forumla
 What is the formula for your force? Including descriptions/definitions for the symbols. (You may include a picture of the formula if it is not easily typed.)
 
-YOUR ANSWER HERE
+![image](https://github.com/user-attachments/assets/684f37be-cb37-4332-a211-1e903fdf6f26)
 
 ### Custom Force
 - What information that is already present in the `Orb` or `OrbNode` classes does this force use?
-  - YOUR ANSWER HERE
+  - None.
 
 - Does this force require any new constants, if so what are they and what values will you try initially?
-  - YOUR ANSWER HERE
+  - k (Coulomb's constant), try some value that will balance out q1, q2, and k
 
 - Does this force require any new information to be added to the `Orb` class? If so, what is it and what data type will you use?
   - YOUR ANSWER HERE
@@ -53,6 +52,8 @@ YOUR ANSWER HERE
 
 ### Simulation 1: Gravity
 Describe how you will attempt to simulate orbital motion.
+
+YOUR ANSWER HERE
 
 --- 
 
