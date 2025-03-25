@@ -25,28 +25,28 @@ All projects will require the following:
 ## Phase 0: Force Selection, Analysis & Plan
 ---------- 
 
-#### Custom Force: Electrostatic Force
+#### Custom Force: Buoyancy Force
 
 ### Forumla
 What is the formula for your force? Including descriptions/definitions for the symbols. (You may include a picture of the formula if it is not easily typed.)
 
-![image](https://github.com/user-attachments/assets/684f37be-cb37-4332-a211-1e903fdf6f26)
+![image](https://github.com/user-attachments/assets/f6222e05-7f24-43ce-841a-30a6fc663050)
 
 ### Custom Force
 - What information that is already present in the `Orb` or `OrbNode` classes does this force use?
-  - None.
+  - g (acceleration due to gravity)
 
 - Does this force require any new constants, if so what are they and what values will you try initially?
-  - k (Coulomb's constant), try some value that will balance out q1, q2, and k
+  - None.
 
 - Does this force require any new information to be added to the `Orb` class? If so, what is it and what data type will you use?
-  - YOUR ANSWER HERE
+  - Fluid Density and Fluid Volume (volume displaced by the object)
 
 - Does this force interact with other `Orbs`, or is it applied based on the environment?
-  - YOUR ANSWER HERE
+  - Applied based on the environment (fluid/medium it is passing through)
 
 - In order to calculate this force, do you need to perform extra intermediary calculations? If so, what?
-  - YOUR ANSWER HERE
+  - Calculate fluid volume (part of orb that is submerged)
 
 --- 
 
