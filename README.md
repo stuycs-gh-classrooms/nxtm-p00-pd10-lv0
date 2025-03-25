@@ -53,33 +53,32 @@ What is the formula for your force? Including descriptions/definitions for the s
 ### Simulation 1: Gravity
 Describe how you will attempt to simulate orbital motion.
 
-YOUR ANSWER HERE
+Give the option to have a fixed orb applying gravitational force on everything in/around it (inside earth/in space) and give the option to have the orbs apply gravitational force on each other.
 
 --- 
 
 ### Simulation 2: Spring
 Describe what your spring simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+The spring simulation will display springs connecting each individual orb to adjacent orbs (in the future, potentially allowing for orbs to be selected to connect them with springs). During program setup, springs will be turned off and when turned on, springs will become visible and orbs will apply spring force depending on the spring length and spring constant.
 
 --- 
 
 ### Simulation 3: Drag
 Describe what your drag simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+The drag simulation will apply downwards drag force on each orb (depending on the medium it is going through). During program setup, drag will be turned off and when turned on AND gravity is turned on, the orbs will be dragged down with more force than the gravitational force alone.
 
 --- 
 
 ### Simulation 4: Custom force
 Describe what your Custom force simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+The buoyancy simulation will allow orbs to sink/float on a medium depending on the mass and size of the orbs, along with the medium the orb is going through. During program setup, buoyancy will be turned off and when turned on, the orbs will eventually either sink or float. They may also sink slightly and float back up or continue sinking downwards if they are dropped down into the fluid (not already in the fluid).
 
 --- 
 
 ### Simulation 5: Combination
 Describe what your combination simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
-
+The combination simulation will apply every force all at once on every orb. It will be turned off at the start and when turned on, chaos will occur. In the future, maybe another combination button where mass/size/coordinates of orbs are all randomized, along with randomized gravitational constant, spring constant, and more.
