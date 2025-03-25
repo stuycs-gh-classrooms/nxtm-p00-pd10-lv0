@@ -46,7 +46,7 @@ What is the formula for your force? Including descriptions/definitions for the s
   - Applied based on the environment (fluid/medium it is passing through)
 
 - In order to calculate this force, do you need to perform extra intermediary calculations? If so, what?
-  - Calculate fluid volume (part of orb that is submerged)
+  - Calculate fluid volume (volume of submerged object) using V = m/P (volume = mass/density)
 
 --- 
 
