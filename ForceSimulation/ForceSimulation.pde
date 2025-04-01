@@ -7,6 +7,15 @@
  Time Spent: N/A
  */
 
+/*
+ Vincent Zheng
+ NeXTCS
+ pd10
+ lab03_SpringListRunner - functional physics with spring force, gravity, bounce
+ Time Spent: 1.3 hrs
+ **/
+
+
 int NUM_ORBS = 10;
 int MIN_SIZE = 10;
 int MAX_SIZE = 60;
@@ -22,9 +31,7 @@ int MOVING = 0;
 int BOUNCE = 1;
 int GRAVITY = 2;
 int DRAGF = 3;
-int WATER = 4;
-int OIL = 5;
-boolean[] toggles = new boolean[6];
+boolean[] toggles = new boolean[4];
 String[] modes = {"Moving", "Bounce", "Gravity", "Drag"};
 String[] mediums = {"Water", "Oil"};
 
@@ -78,12 +85,6 @@ void keyPressed() {
   if (key == 'd') {
     toggles[DRAGF] = !toggles[DRAGF];
   }
-  if (key == 'w') {
-    toggles[WATER] = !toggles[WATER];
-  }
-  if (key == 'o') {
-    toggles[OIL] = !toggles[OIL];
-  }
   if (key == '=' || key =='+') {
     slinky.addFront(new OrbNode());
   }
@@ -106,7 +107,7 @@ void displayMode() {
   int spacing = 85;
   int x = 0;
 
-  for (int m=0; m<modes.length; m++) {
+  for (int m=0; m<toggles.length; m++) {
     //set box color
     if (toggles[m]) {
       fill(0, 255, 0);
@@ -115,21 +116,6 @@ void displayMode() {
     }
 
     float w = textWidth(modes[m]);
-    rect(x, 0, w+5, 20);
-    fill(0);
-    text(modes[m], x+2, 2);
-    x+= w+5;
-  }
-
-  for (int m=modes.length; m<toggles.length; m++) {
-    //set box color
-    if (toggles[m + modes.length]) {
-      fill(0, 255, 0);
-    } else {
-      fill(255, 0, 0);
-    }
-
-    float w = textWidth(modes[m + modes.length]);
     rect(x, 0, w+5, 20);
     fill(0);
     text(modes[m], x+2, 2);
