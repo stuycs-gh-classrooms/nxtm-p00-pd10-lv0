@@ -13,21 +13,31 @@ class OrbNode extends Orb {
 
   void display() {
     super.display();
-    if (next != null) {
-      float dnext = this.center.dist(next.center);
-      if (dnext < SPRING_LENGTH) { stroke(0, 255, 0); }
-      else if (dnext > SPRING_LENGTH) { stroke(255, 0, 0); }
-      else { stroke(0); }
-      line(this.center.x, this.center.y+2, next.center.x, next.center.y+2);
-    }//next spring
+    if (toggles[SPRING]) {
+      if (next != null) {
+        float dnext = this.center.dist(next.center);
+        if (dnext < SPRING_LENGTH) {
+          stroke(0, 255, 0);
+        } else if (dnext > SPRING_LENGTH) {
+          stroke(255, 0, 0);
+        } else {
+          stroke(0);
+        }
+        line(this.center.x, this.center.y+2, next.center.x, next.center.y+2);
+      }//next spring
 
-    if (previous != null) {
-      float dprev = this.center.dist(previous.center);
-      if (dprev < SPRING_LENGTH) { stroke(0, 255, 0); }
-      else if (dprev > SPRING_LENGTH) { stroke(255, 0, 0); }
-      else { stroke(0); }
-      line(this.center.x, this.center.y-2, previous.center.x, previous.center.y-2);
-    }//next spring
+      if (previous != null) {
+        float dprev = this.center.dist(previous.center);
+        if (dprev < SPRING_LENGTH) {
+          stroke(0, 255, 0);
+        } else if (dprev > SPRING_LENGTH) {
+          stroke(255, 0, 0);
+        } else {
+          stroke(0);
+        }
+        line(this.center.x, this.center.y-2, previous.center.x, previous.center.y-2);
+      }//next spring
+    }
   }//drawSpring
 
   void applySprings(int springLength, float springK) {
@@ -40,5 +50,4 @@ class OrbNode extends Orb {
       applyForce(sforce);
     }
   }///applySprings
-
 }//OrbNode

@@ -19,17 +19,17 @@ class OrbList {
 
   void populate(int n, boolean ordered) {
     front = null; //clears list
-    
+
     //adds n number of randomly generated orbs to the list
     for (int i = 0; i < n; i++) {
       OrbNode newNode = new OrbNode();
-      
+
       //if ordered, all orbs have same y coordinate, if not, coordinates already randomized
       if (ordered) {
         newNode.center.x = SPRING_LENGTH * i + 50;
         newNode.center.y = height / 2;
       }
-      
+
       addFront(newNode); //creates the nodes
     }
   }//populate
@@ -51,7 +51,7 @@ class OrbList {
       current = current.next;
     }
   }//applySprings
-  
+
   void applyGravity(Orb other, float gConstant) {
     //goes through linked list and applies gravity on all nodes
     OrbNode current = front;
@@ -61,6 +61,15 @@ class OrbList {
       current = current.next;
     }
   }//applySprings
+
+  void applyDrag(float dcoef) {
+    OrbNode current = front;
+    while (current != null) {
+      PVector dForce = current.getDragForce(dcoef);
+      current.applyForce(dForce);
+      current = current.next;
+    }
+  }//applyDrag
 
   void run(boolean bounce) {
     //if bounce is true, allow the orbs to bounce off the boundaries of the program

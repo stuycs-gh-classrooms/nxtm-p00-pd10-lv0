@@ -7,21 +7,12 @@
  Time Spent: N/A
  */
 
-/*
- Vincent Zheng
- NeXTCS
- pd10
- lab03_SpringListRunner - functional physics with spring force, gravity, bounce
- Time Spent: 1.3 hrs
- **/
-
-
 int NUM_ORBS = 10;
 int MIN_SIZE = 10;
 int MAX_SIZE = 60;
 float MIN_MASS = 10;
 float MAX_MASS = 100;
-float G_CONSTANT = 1;
+float G_CONSTANT = 9.81;
 float D_COEF = 0.1;
 
 int SPRING_LENGTH = 50;
@@ -30,45 +21,56 @@ float  SPRING_K = 0.005;
 int MOVING = 0;
 int BOUNCE = 1;
 int GRAVITY = 2;
-int DRAGF = 3;
-boolean[] toggles = new boolean[4];
-String[] modes = {"Moving", "Bounce", "Gravity", "Drag"};
+int SPRING = 3;
+int DRAGF = 4;
+int BUOYANCY = 5;
+int WATER = 0;
+int OIL = 1;
+boolean[] toggles = new boolean[6];
+String[] modes = {"Moving", "Bounce", "Gravity", "Spring", "Drag", "Buoyancy"};
+boolean[] mtoggles = new boolean[2]; //medium toggles
 String[] mediums = {"Water", "Oil"};
 
 FixedOrb earth;
 
-OrbList slinky;
+OrbList orbs;
 
 void setup() {
-  size(600, 600);
+  fullScreen();
 
   earth = new FixedOrb(width/2, height * 200, 1, 20000);
 
-  slinky = new OrbList();
-  slinky.populate(NUM_ORBS, true);
+  orbs = new OrbList();
+  orbs.populate(NUM_ORBS, true);
 }//setup
 
 void draw() {
   background(255);
   displayMode();
 
-  slinky.display();
+  orbs.display();
 
   if (toggles[MOVING]) {
-
-    slinky.applySprings(SPRING_LENGTH, SPRING_K);
+    if (toggles[SPRING]) {
+      orbs.applySprings(SPRING_LENGTH, SPRING_K);
+    }
 
     if (toggles[GRAVITY]) {
-      slinky.applyGravity(earth, GRAVITY);
+      orbs.applyGravity(earth, G_CONSTANT);
     }
-    slinky.run(toggles[BOUNCE]);
+
+    if (toggles[DRAGF]) {
+      orbs.applyDrag(D_COEF);
+    }
+
+    orbs.run(toggles[BOUNCE]);
   }//moving
 }//draw
 
 void mousePressed() {
-  OrbNode selected = slinky.getSelected(mouseX, mouseY);
+  OrbNode selected = orbs.getSelected(mouseX, mouseY);
   if (selected != null) {
-    slinky.removeNode(selected);
+    orbs.removeNode(selected);
   }
 }//mousePressed
 
@@ -76,26 +78,38 @@ void keyPressed() {
   if (key == ' ') {
     toggles[MOVING] = !toggles[MOVING];
   }
+  if (key == 'b') {
+    toggles[BOUNCE] = !toggles[BOUNCE];
+  }
   if (key == 'g') {
     toggles[GRAVITY] = !toggles[GRAVITY];
   }
-  if (key == 'b') {
-    toggles[BOUNCE] = !toggles[BOUNCE];
+  if (key == 's') {
+    toggles[SPRING] = !toggles[SPRING];
   }
   if (key == 'd') {
     toggles[DRAGF] = !toggles[DRAGF];
   }
+  if (key == 'u') {
+    toggles[BUOYANCY] = !toggles[BUOYANCY];
+  }
+  if (key == 'w') {
+    mtoggles[WATER] = !mtoggles[WATER];
+  }
+  if (key == 'o') {
+    mtoggles[OIL] = !mtoggles[OIL];
+  }
   if (key == '=' || key =='+') {
-    slinky.addFront(new OrbNode());
+    orbs.addFront(new OrbNode());
   }
   if (key == '-') {
-    slinky.removeFront();
+    orbs.removeFront();
   }
   if (key == '1') {
-    slinky.populate(NUM_ORBS, true);
+    orbs.populate(NUM_ORBS, true);
   }
   if (key == '2') {
-    slinky.populate(NUM_ORBS, false);
+    orbs.populate(NUM_ORBS, false);
   }
 }//keyPressed
 
@@ -119,6 +133,23 @@ void displayMode() {
     rect(x, 0, w+5, 20);
     fill(0);
     text(modes[m], x+2, 2);
+    x+= w+5;
+  }
+
+  x = 0;
+
+  for (int m=0; m<mtoggles.length; m++) {
+    //set box color
+    if (mtoggles[m]) {
+      fill(0, 255, 0);
+    } else {
+      fill(255, 0, 0);
+    }
+
+    float w = textWidth(mediums[m]);
+    rect(x, 20, w+5, 20);
+    fill(0);
+    text(mediums[m], x+2, 22);
     x+= w+5;
   }
 }//display
