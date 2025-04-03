@@ -7,7 +7,7 @@
  Time Spent: N/A
  */
 
-int NUM_ORBS = 10;
+int NUM_ORBS = 37;
 int MIN_SIZE = 10;
 int MAX_SIZE = 60;
 float MIN_MASS = 10;
@@ -24,10 +24,11 @@ int GRAVITY = 2;
 int SPRING = 3;
 int DRAGF = 4;
 int BUOYANCY = 5;
+int COMBINATION = 6;
 int WATER = 0;
 int OIL = 1;
-boolean[] toggles = new boolean[6];
-String[] modes = {"Moving", "Bounce", "Gravity", "Spring", "Drag", "Buoyancy"};
+boolean[] toggles = new boolean[7];
+String[] modes = {"Moving", "Bounce", "Gravity", "Spring", "Drag", "Buoyancy", "Combination"};
 boolean[] mtoggles = new boolean[2]; //medium toggles
 String[] mediums = {"Water", "Oil"};
 
@@ -51,20 +52,12 @@ void draw() {
   orbs.display();
 
   if (toggles[MOVING]) {
-    if (toggles[SPRING]) {
-      orbs.applySprings(SPRING_LENGTH, SPRING_K);
-    }
-
-    if (toggles[GRAVITY]) {
-      orbs.applyGravity(earth, G_CONSTANT);
-    }
-
-    if (toggles[DRAGF]) {
-      orbs.applyDrag(D_COEF);
-    }
-
     orbs.run(toggles[BOUNCE]);
   }//moving
+
+  gravitySimulation();
+  springSimulation();
+  dragSimulation();
 }//draw
 
 void mousePressed() {
@@ -83,15 +76,42 @@ void keyPressed() {
   }
   if (key == 'g') {
     toggles[GRAVITY] = !toggles[GRAVITY];
+    if (toggles[GRAVITY]) {
+      if (!toggles[COMBINATION]) {
+        toggles[SPRING] = false;
+        toggles[DRAGF] = false;
+        toggles[BUOYANCY] = false;
+      }
+      orbs.populate(NUM_ORBS, true);
+    }
   }
   if (key == 's') {
     toggles[SPRING] = !toggles[SPRING];
+    if (toggles[SPRING]) {
+      if (!toggles[COMBINATION]) {
+        toggles[GRAVITY] = false;
+        toggles[DRAGF] = false;
+        toggles[BUOYANCY] = false;
+      }
+      orbs.populate(NUM_ORBS, false);
+    }
   }
   if (key == 'd') {
     toggles[DRAGF] = !toggles[DRAGF];
+    if (toggles[DRAGF]) {
+      if (!toggles[COMBINATION]) {
+        toggles[GRAVITY] = false;
+        toggles[SPRING] = false;
+        toggles[BUOYANCY] = false;
+      }
+      orbs.populate(NUM_ORBS, true);
+    }
   }
   if (key == 'u') {
     toggles[BUOYANCY] = !toggles[BUOYANCY];
+  }
+  if (key == 'c') {
+    toggles[COMBINATION] = !toggles[COMBINATION];
   }
   if (key == 'w') {
     mtoggles[WATER] = !mtoggles[WATER];
@@ -153,3 +173,28 @@ void displayMode() {
     x+= w+5;
   }
 }//display
+
+void gravitySimulation() {
+  if (toggles[MOVING]) {
+    if (toggles[GRAVITY]) {
+      orbs.applyGravity(earth, G_CONSTANT);
+    }//moving
+  }
+}
+
+void springSimulation() {
+  if (toggles[MOVING]) {
+    if (toggles[SPRING]) {
+      orbs.applySprings(SPRING_LENGTH, SPRING_K);
+    }
+  }//moving
+}
+
+void dragSimulation() {
+  if (toggles[MOVING]) {
+    if (toggles[DRAGF]) {
+      
+      orbs.applyDrag(D_COEF);
+    }
+  }
+}

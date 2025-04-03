@@ -27,7 +27,10 @@ class OrbList {
       //if ordered, all orbs have same y coordinate, if not, coordinates already randomized
       if (ordered) {
         newNode.center.x = SPRING_LENGTH * i + 50;
-        newNode.center.y = height / 2;
+        newNode.center.y = 100;
+        if (toggles[DRAGF]) {
+          newNode.velocity.y = 10;
+        }
       }
 
       addFront(newNode); //creates the nodes

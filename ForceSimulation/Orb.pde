@@ -64,6 +64,7 @@ class Orb {
     PVector force = other.center.copy();
     force.sub(center);
     force.mult(strength);
+    force.x = 0;
     return force;
   }
 
