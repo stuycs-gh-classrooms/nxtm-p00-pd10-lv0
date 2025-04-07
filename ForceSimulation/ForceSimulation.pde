@@ -14,7 +14,7 @@
  'W' to activate "Water" (Only works when buoyancy is turned on)
  'O' to activate "Oil" (Only works when buoyancy is turned on)
  */
- 
+
 /**
  Vincent Zheng
  NeXTCS
@@ -46,9 +46,9 @@ int COMBINATION = 6;
 int WATER = 0;
 int OIL = 1;
 boolean[] toggles = new boolean[7];
-String[] modes = {"Moving", "Bounce", "Gravity", "Spring", "Drag", "Buoyancy", "Combination"};
+String[] modes = {"[ ] Moving", "[B] Bounce", "[G] Gravity", "[S] Spring", "[D] Drag", "[U] Buoyancy", "[C] Combination"};
 boolean[] mtoggles = new boolean[2]; //medium toggles
-String[] mediums = {"Water", "Oil"};
+String[] mediums = {"[W] Water", "[O] Oil"};
 
 FixedOrb earth;
 
@@ -200,6 +200,24 @@ void keyPressed() {
   if (key == '2') {
     orbs.populate(NUM_ORBS, false);
   }
+  if (keyCode == UP) {
+    G_CONSTANT +=  0.01;
+  }
+  if (keyCode == DOWN) {
+    G_CONSTANT -= 0.01;
+  }
+  if (keyCode == RIGHT) {
+    SPRING_K += 0.001;
+  }
+  if (keyCode == LEFT) {
+    SPRING_K -= 0.001;
+  }
+  if (key == 'z') {
+    D_COEF -= 0.1;
+  }
+  if (key == 'x') {
+    D_COEF += 0.1;
+  }
 }//keyPressed
 
 
@@ -241,6 +259,10 @@ void displayMode() {
     text(mediums[m], x+2, 22);
     x+= w+5;
   }
+
+  text("[UP] [DOWN] gravity constant: " + G_CONSTANT, width - 310, 0);
+  text("[LEFT] [RIGHT] spring constant: " + SPRING_K, width - 310, 20);
+  text("[Z] [X] drag coefficient: " + D_COEF, width - 310, 40);
 }//display
 
 void gravitySimulation() {
