@@ -6,28 +6,32 @@ class Orb {
   PVector acceleration;
   float bsize;
   float mass;
+  float density;
   color c;
+  boolean inMedium;
 
 
   Orb() {
-     bsize = random(10, MAX_SIZE);
-     float x = random(bsize/2, width-bsize/2);
-     float y = random(bsize/2, height-bsize/2);
-     center = new PVector(x, y);
-     mass = random(10, 100);
-     velocity = new PVector();
-     acceleration = new PVector();
-     setColor();
+    bsize = random(10, MAX_SIZE);
+    float x = random(bsize/2, width-bsize/2);
+    float y = random(bsize/2, height-bsize/2);
+    center = new PVector(x, y);
+    mass = random(10, 100);
+    density = mass/bsize;
+    velocity = new PVector();
+    acceleration = new PVector();
+    setColor();
   }
 
   Orb(float x, float y, float s, float m) {
-     bsize = s;
-     mass = m;
-     center = new PVector(x, y);
-     velocity = new PVector();
-     acceleration = new PVector();
-     setColor();
-   }
+    bsize = s;
+    mass = m;
+    density = mass/bsize;
+    center = new PVector(x, y);
+    velocity = new PVector();
+    acceleration = new PVector();
+    setColor();
+  }
 
   //movement behavior
   void move(boolean bounce) {
@@ -80,7 +84,27 @@ class Orb {
     return direction;
   }//getSpring
 
-  boolean yBounce(){
+  PVector getBuoyancy(float fluidDensity) {
+    float volume = mass/density;
+    float mag = fluidDensity * G_CONSTANT * volume;
+
+    PVector bForce = new PVector(0, -mag);
+    PVector outside = new PVector(0, 0);
+    if (center.x + bsize / 2 >= 0 && center.x - bsize / 2 <= width && center.y + bsize / 2 >= 200 && center.y - bsize / 2 <= height) {
+      inMedium = true;
+    }
+
+    if (inMedium) {
+      if (!toggles[COMBINATION]) {
+        center.y = constrain(center.y, 200 - bsize/2, height);
+      }
+      return bForce;
+    } else {
+      return outside;
+    }
+  }
+
+  boolean yBounce() {
     if (center.y > height - bsize/2) {
       velocity.y *= -1;
       center.y = height - bsize/2;
@@ -99,8 +123,7 @@ class Orb {
       center.x = width - bsize/2;
       velocity.x *= -1;
       return true;
-    }
-    else if (center.x < bsize/2) {
+    } else if (center.x < bsize/2) {
       center.x = bsize/2;
       velocity.x *= -1;
       return true;
@@ -110,7 +133,7 @@ class Orb {
 
   boolean collisionCheck(Orb other) {
     return ( this.center.dist(other.center)
-             <= (this.bsize/2 + other.bsize/2) );
+      <= (this.bsize/2 + other.bsize/2) );
   }//collisionCheck
 
   boolean isSelected(float x, float y) {
@@ -130,7 +153,6 @@ class Orb {
     fill(c);
     circle(center.x, center.y, bsize);
     fill(0);
-    //text(mass, center.x, center.y);
+    text(mass, center.x, center.y);
   }//display
-
 }//Orb

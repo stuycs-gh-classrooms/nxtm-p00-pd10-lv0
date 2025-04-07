@@ -1,10 +1,27 @@
 /**
+ Controls:
+ 'LMB' to delete orbs
+ 'RMB' to move orbs
+ '+' to add a front orb at random coordinates
+ '-' to delete the front most orb
+ 'SPACE' to activate "Moving"
+ 'B' to activate "Bounce"
+ 'G' to activate "Gravity"
+ 'S' to activate "Spring"
+ 'D' to activate "Drag"
+ 'U' to activate "Buoyancy"
+ 'C' to activate "Combination" (Allows you to turn on multiple forces at once)
+ 'W' to activate "Water" (Only works when buoyancy is turned on)
+ 'O' to activate "Oil" (Only works when buoyancy is turned on)
+ */
+ 
+/**
  Vincent Zheng
  NeXTCS
  pd10
  p00_ForceSimulation
  3/27/2025
- Time Spent: N/A
+ Time Spent: 3.6 hrs
  */
 
 int NUM_ORBS = 37;
@@ -13,10 +30,11 @@ int MAX_SIZE = 60;
 float MIN_MASS = 10;
 float MAX_MASS = 100;
 float G_CONSTANT = 9.81;
-float D_COEF = 0.1;
+float D_COEF = 1;
+float F_DENSITY = 0;
 
 int SPRING_LENGTH = 50;
-float  SPRING_K = 0.005;
+float SPRING_K = 0.005;
 
 int MOVING = 0;
 int BOUNCE = 1;
@@ -55,17 +73,52 @@ void draw() {
     orbs.run(toggles[BOUNCE]);
   }//moving
 
+  if (toggles[BUOYANCY]) {
+    if (toggles[COMBINATION]) {
+      if (mtoggles[WATER]) {
+        fill(#def4fc, 80);
+        rect(0, 0, width, height);
+      }
+      if (mtoggles[OIL]) {
+        fill(#dbcf5c, 80);
+        rect(0, 0, width, height);
+      }
+    } else {
+      if (mtoggles[WATER]) {
+        fill(#def4fc, 80);
+        rect(0, 200, width, height - 200);
+      }
+      if (mtoggles[OIL]) {
+        fill(#dbcf5c, 80);
+        rect(0, 200, width, height - 200);
+      }
+    }
+  }
+
   gravitySimulation();
   springSimulation();
   dragSimulation();
+  buoyancySimulation();
 }//draw
 
 void mousePressed() {
-  OrbNode selected = orbs.getSelected(mouseX, mouseY);
-  if (selected != null) {
-    orbs.removeNode(selected);
+  if (mouseButton == LEFT) {
+    OrbNode selected = orbs.getSelected(mouseX, mouseY);
+    if (selected != null) {
+      orbs.removeNode(selected);
+    }
   }
 }//mousePressed
+
+void mouseDragged() {
+  if (mouseButton == RIGHT) {
+    OrbNode selected = orbs.getSelected(mouseX, mouseY);
+    if (selected != null) {
+      selected.center.x = mouseX;
+      selected.center.y = mouseY;
+    }
+  }
+}
 
 void keyPressed() {
   if (key == ' ') {
@@ -81,8 +134,8 @@ void keyPressed() {
         toggles[SPRING] = false;
         toggles[DRAGF] = false;
         toggles[BUOYANCY] = false;
+        orbs.populate(NUM_ORBS, true);
       }
-      orbs.populate(NUM_ORBS, true);
     }
   }
   if (key == 's') {
@@ -92,8 +145,8 @@ void keyPressed() {
         toggles[GRAVITY] = false;
         toggles[DRAGF] = false;
         toggles[BUOYANCY] = false;
+        orbs.populate(NUM_ORBS, false);
       }
-      orbs.populate(NUM_ORBS, false);
     }
   }
   if (key == 'd') {
@@ -103,21 +156,37 @@ void keyPressed() {
         toggles[GRAVITY] = false;
         toggles[SPRING] = false;
         toggles[BUOYANCY] = false;
+        orbs.populate(NUM_ORBS, true);
       }
-      orbs.populate(NUM_ORBS, true);
     }
   }
   if (key == 'u') {
     toggles[BUOYANCY] = !toggles[BUOYANCY];
+    if (toggles[BUOYANCY]) {
+      if (!toggles[COMBINATION]) {
+        toggles[GRAVITY] = false;
+        toggles[SPRING] = false;
+        toggles[DRAGF] = false;
+        orbs.populate(NUM_ORBS, true);
+      }
+    }
   }
   if (key == 'c') {
     toggles[COMBINATION] = !toggles[COMBINATION];
+    toggles[GRAVITY] = false;
+    toggles[SPRING] = false;
+    toggles[DRAGF] = false;
+    toggles[BUOYANCY] = false;
   }
   if (key == 'w') {
     mtoggles[WATER] = !mtoggles[WATER];
+    F_DENSITY = 0.01;
+    mtoggles[OIL] = false;
   }
   if (key == 'o') {
     mtoggles[OIL] = !mtoggles[OIL];
+    F_DENSITY = 0.007;
+    mtoggles[WATER] = false;
   }
   if (key == '=' || key =='+') {
     orbs.addFront(new OrbNode());
@@ -193,8 +262,15 @@ void springSimulation() {
 void dragSimulation() {
   if (toggles[MOVING]) {
     if (toggles[DRAGF]) {
-      
       orbs.applyDrag(D_COEF);
+    }
+  }
+}
+
+void buoyancySimulation() {
+  if (toggles[MOVING]) {
+    if (toggles[BUOYANCY]) {
+      orbs.applyBuoyancy(F_DENSITY);
     }
   }
 }

@@ -28,8 +28,8 @@ class OrbList {
       if (ordered) {
         newNode.center.x = SPRING_LENGTH * i + 50;
         newNode.center.y = 100;
-        if (toggles[DRAGF]) {
-          newNode.velocity.y = 10;
+        if (toggles[DRAGF] || toggles[BUOYANCY]) {
+          newNode.velocity.y = 5;
         }
       }
 
@@ -73,6 +73,15 @@ class OrbList {
       current = current.next;
     }
   }//applyDrag
+
+  void applyBuoyancy(float fdensity) {
+    OrbNode current = front;
+    while (current != null) {
+      PVector bforce = current.getBuoyancy(fdensity);
+      current.applyForce(bforce);
+      current = current.next;
+    }
+  }//
 
   void run(boolean bounce) {
     //if bounce is true, allow the orbs to bounce off the boundaries of the program
